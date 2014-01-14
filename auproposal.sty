@@ -1,0 +1,158 @@
+%AI: MODIFICATION LOG
+%AI: Last modified: 20100630
+%AI:
+%
+
+%PAGE SIZE
+\usepackage[margin=1in]{geometry}
+
+%allow use of "chapter" for proposal sections
+\def\chapter{\section}
+
+%SPACING:
+% For some environments we switch back to single-spacing, also
+% provides \dsp in case you need double-spacing where single-spacing
+% is otherwise used.
+\def\ssp{\def\baselinestretch{1.0}\large\normalsize}
+\def\dsp{\def\baselinestretch{1.67}\large\normalsize}
+
+
+%    ****************************************
+%    *             FRONT MATTER             *
+%    ****************************************
+
+%
+% DECLARATIONS
+%
+% These macros are used to declare arguments needed for the
+% construction of the front matter.  
+
+% The year the degree will be officially conferred
+\def\degreeyear#1{\gdef\@degreeyear{#1}}
+
+% The full (unabbreviated) name of the degree
+\def\degree#1{\gdef\@degree{#1}}
+
+% The name of your thesis committee chair
+\def\chair#1{\gdef\@chair{#1}}
+
+% The names of your other committe members, one per line
+\def\secondreader#1{\gdef\@secondreader{#1}}
+\def\thirdreader#1{\gdef\@thirdreader{#1}}
+\def\fourthreader#1{\gdef\@fourthreader{#1}}
+\def\fifthreader#1{\gdef\@fifthreader{#1}}
+\def\sixthreader#1{\gdef\@sixthreader{#1}}
+
+% The name of your degree field (e.g. Economics, Computer Science)
+\def\degreefield#1{\gdef\@degreefield{#1}}
+
+
+% ********************************************************
+% ************* BEGIN: TITLE PAGE  ***********************
+% ******************************************************** 
+
+%%% Define the fonts that will be used in the front matter headings
+\def\fmfont{\fontsize\@xiipt{14.5}\selectfont}
+\def\fmsmallfont{\fontsize\@xiipt{10pt}\selectfont}
+
+%AI: CAS wants exactly 2 inch top margin on title page
+%AI: if you see something else, try fiddling with the numbers
+\newcommand{\biggertopmargin}{%
+\ifnum \@ptsize = 0 \vspace*{28bp} \fi
+\ifnum \@ptsize = 1 \vspace*{27bp} \fi             %AI: changed to fit page
+\ifnum \@ptsize = 2 \vspace*{26bp} \fi        %AI: changed to fit page
+}
+
+%%% Define the title page environment         %AI: added 20050713
+\renewenvironment{titlepage}
+    {%
+\setcounter{page}{1}%                         %AI: superfluous, I believe
+\let\footnotesize\small%
+\let\footnoterule\relax%
+\clearpage\biggertopmargin%
+\thispagestyle{empty}
+    }%
+    {\setcounter{footnote}{0}
+    }
+
+%%% Define 'maketitle'
+%%% \maketitle outputs the complete titlepage.
+%%% It requires the above font macros and titlepage environment.
+\renewcommand{\maketitle}{%%begin: maketitle def
+\begin{titlepage}
+{\centering\dsp%                                                 % change from ssp to dsp for title
+\fmfont\bfseries \uppercase\expandafter{\@title}\par}  % typeset TITLE of the Dissertation
+{\centering\ssp%                                                    % switch back to single space (ssp)
+\setlength{\parskip}{0.75\baselineskip}
+\fmsmallfont by \par {\@author}                        % typeset AUTHOR name in small font
+\par
+Proposal submitted to the \par                              
+Faculty of the College of Arts and Sciences \par   
+of American University \par                        
+in Partial Fulfillment of \par                     
+the Requirements for the Degree \par               
+of {\@degree} \par
+in \par
+{\@degreefield}\par
+}
+
+\vspace{0.5in}
+
+
+%%% Approval lines.
+% ABC  I did this with the tabular environment because
+% ABC  it seemed a lot easier, given the AU requirement of having the 
+% ABC  professor names under the signature line. 
+%AI: switch to tabular* in order to span page
+{%%begin approval lines
+\ssp
+\parindent\z@ 
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l r r l l l r }
+ &          & Chair: &                             & & &\\\cline{4-7}
+ &          &        & {\@chair}                   & & &\\
+ &          &        &                             & & &\\
+ &          &        &                             & & &\\ \cline{4-7}
+ &          &        & {\@secondreader}            & & &\\
+ &          &      &                             & & &\\
+ &          &      &                             & & &\\ \cline{4-7}
+ &          &      & {\@thirdreader}             & & &\\
+ &          &      &                             & & &\\ \cline{1-2}
+\small{Dean, College of Arts and Sciences} & & & & & \\ 
+ &          &                             & & &\\
+                                            & & & & & \\ \cline{1-2}
+ \small{Date}                               & & & & & \\
+\end{tabular*}
+}%%end approval lines
+
+\vfill
+ 
+{\ssp\centering
+{\@degreeyear} \par 
+American University \par
+Washington, D.C. 20016 \par} 
+%\thispagestyle{empty}%
+\end{titlepage}
+\clearpage
+}%%end: maketitle def
+
+
+
+% ********************************************************
+% *************** END: TITLE PAGE  ***********************
+% ******************************************************** 
+
+
+% ********************************************************
+% **************  FRONTMATTER environment  ***************
+% ********************************************************
+%
+% The FRONTMATTER environment makes sure that page numbering is set
+% correctly (roman, lower-case, starting at 2) for the front matter
+% that follows the copyright page.  It also resets page-numbering for
+% the remainder of the dissertation (arabic, starting at 1).
+
+\newenvironment{frontmatter}
+{\setcounter{page}{2}\renewcommand{\thepage}{\roman{page}}}
+{\newpage\renewcommand{\thepage}{\arabic{page}}\setcounter{page}{1}}
+
+
